@@ -5,8 +5,8 @@ import ua.nure.tsekhmister.cardealership.dao.DAOFactory;
 import ua.nure.tsekhmister.cardealership.dao.DealDAO;
 import ua.nure.tsekhmister.cardealership.dao.UserDAO;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -22,8 +22,8 @@ public class MySqlDAOFactory extends DAOFactory {
 
     static {
         Properties prop = new Properties();
-        try (FileReader fr = new FileReader("src/main/resources/application.properties")) {
-            prop.load(fr);
+        try (InputStream is = MySqlDAOFactory.class.getResourceAsStream("/application.properties")) {
+            prop.load(is);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

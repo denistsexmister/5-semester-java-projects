@@ -1,7 +1,6 @@
 package ua.nure.tsekhmister.cardealership.dao.mysql;
 
 import ua.nure.tsekhmister.cardealership.dao.DealDAO;
-import ua.nure.cpp.tsekhmister.practice6.entity.*;
 import ua.nure.tsekhmister.cardealership.entity.*;
 
 import java.math.BigDecimal;
