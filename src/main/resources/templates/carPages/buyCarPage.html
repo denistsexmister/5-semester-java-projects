@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head('Car buying')}"></head>
+<body>
+    <header th:replace="~{fragments/header::header}"></header>
+    <h1>Are you sure you want to buy this car?</h1>
+    <form th:action="@{/buyCar}" th:method="POST" th:object="${areYouSureForm}">
+        <label th:for="sure">Are you sure?</label>
+        <input type="checkbox" th:field="*{sure}">
+        <input class="btn btn-success" type="submit" value="Buy car">
+    </form>
+</body>
+</html>

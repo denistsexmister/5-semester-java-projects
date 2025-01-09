@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head('Account deleting')}"></head>
+<body>
+    <header th:replace="~{fragments/header::header}"></header>
+    <h1>Are you sure you want to delete your account?</h1>
+    <p>All your car on sale and information about deals will be deleted.</p>
+    <form th:action="@{/deleteMyAccount}" th:method="POST" th:object="${areYouSureForm}">
+        <label th:for="sure">Are you sure?</label>
+        <input type="checkbox" th:field="*{sure}">
+        <input class="btn btn-success" type="submit" value="Delete account">
+    </form>
+</body>
+</html>

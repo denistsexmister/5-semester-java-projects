@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head('Register')}"></head>
+<body>
+    <div th:replace="~{fragments/header::header}"></div>
+    <form th:action="@{/register}" th:object="${registerForm}" th:method="POST">
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Login" type="text" th:field="*{login}">
+            <label th:for="login">Login: </label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Password" type="password" th:field="*{password}">
+            <label th:for="password">Password: </label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Full name" type="text" th:field="*{fullName}">
+            <label th:for="fullName">Full name: </label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Phone" type="text" th:field="*{phone}">
+            <label th:for="phone">Phone: </label>
+        </div>
+        <div class="mb-3">
+            <input class="btn btn-success" type="submit" aria-describedby="submit-text" value="Register">
+            <p id="submit-text" class="form-text">Already have an account? <a th:href="@{/logIn}">Log in now!</a></p>
+        </div>
+    </form>
+    <div th:if="${errors != null}">
+        <p class="text-danger" th:each="error : ${errors}" th:text="${error.getDefaultMessage()}"></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head(${'Search by price'})}"></head>
+<body>
+    <header th:replace="~{fragments/header::header}"></header>
+    <form th:action="@{/searchByPrice}" th:method="POST" th:object="${searchForm}">
+        <input type="number" step="0.01" th:field="*{searchQuery}">
+        <input class="btn btn-success" type="submit" value="Search">
+    </form>
+    <div th:if="${errors != null}">
+        <p class="text-danger" th:each="error : ${errors}" th:text="${error.getDefaultMessage()}"></p>
+    </div>
+    <div th:if="${carsOnSale != null}" th:remove="tag">
+        <div th:if="${carsOnSale.isEmpty()}">
+            <h3>Cars with price bigger than [[${searchForm.searchQuery}]] was not found</h3>
+        </div>
+        <div th:if="${!carsOnSale.isEmpty()}">
+            <table class="table table-striped table-hover table-bordered">
+                <tr>
+                    <td>#</td>
+                    <td>VIN</td>
+                    <td>Brand</td>
+                    <td>Price</td>
+                    <td>See more</td>
+                </tr>
+                <tr th:each="carOnSale : ${carsOnSale}">
+                    <td th:text="${carOnSaleStat.count}"></td>
+                    <td th:text="${carOnSale.vin}"></td>
+                    <td th:text="${carOnSale.brand}"></td>
+                    <td th:text="${carOnSale.price}"></td>
+                    <td>
+                        <a th:href="@{/car(vin=${carOnSale.vin})}">See details</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

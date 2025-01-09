@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head('My deals')}"></head>
+<body>
+    <header th:replace="~{fragments/header::header}"></header>
+    <h1>My deals</h1>
+    <h3 th:if="${dealsWhereUserSeller.isEmpty() && dealsWhereUserBuyer.isEmpty()}">You don't have any deals</h3>
+    <div th:if="${!dealsWhereUserSeller.isEmpty()}">
+        <h3>Deals where you sold cars</h3>
+        <table class="table table-striped table-hover table-bordered">
+            <tr>
+                <td>#</td>
+                <td>Buyer</td>
+                <td>Date</td>
+                <td>Cost</td>
+            </tr>
+          <tr th:each="deal : ${dealsWhereUserSeller}">
+              <td th:text="${dealStat.count}"></td>
+              <div th:switch="${buyers.get(deal.buyerId) == null}">
+                <td th:case="${false}"><a th:href="@{/user(id=${deal.buyerId})}" th:text="${buyers.get(deal.buyerId).fullName}"></a></td>
+                <td th:case="${true}">Deleted user</td>
+              </div>
+
+              <td th:text="${deal.dealDate}"></td>
+              <td th:text="${deal.cost}"></td>
+          </tr>
+        </table>
+    </div>
+    <div th:if="${!dealsWhereUserBuyer.isEmpty()}">
+        <h3>Deals where you bought cars</h3>
+        <table class="table table-striped table-hover table-bordered">
+            <tr>
+                <td>#</td>
+                <td>Seller</td>
+                <td>Date</td>
+                <td>Cost</td>
+            </tr>
+            <tr th:each="deal : ${dealsWhereUserBuyer}">
+                <td th:text="${dealStat.count}"></td>
+                <div th:switch="${sellers.get(deal.sellerId) == null}">
+                    <td th:case="${false}"><a th:href="@{/user(id=${deal.sellerId})}" th:text="${sellers.get(deal.sellerId).fullName}"></a></td>
+                    <td th:case="${true}">Deleted user</td>
+                </div>
+                <td th:text="${deal.dealDate}"></td>
+                <td th:text="${deal.cost}"></td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>

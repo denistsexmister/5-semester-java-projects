@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:replace="~{fragments/head::head('Cars on sale')}">Title</title>
+</head>
+<body>
+    <header th:replace="~{fragments/header::header}"></header>
+    <h1>Cars on sale</h1>
+    <table class="table table-striped table-hover table-bordered" th:if="${!carsOnSale.isEmpty()}">
+        <tr>
+            <td>#</td>
+            <td>VIN</td>
+            <td>Brand</td>
+            <td>Price</td>
+            <td>See more</td>
+        </tr>
+        <tr th:each="carOnSale : ${carsOnSale}">
+            <td th:text="${carOnSaleStat.count}"></td>
+            <td th:text="${carOnSale.vin}"></td>
+<!--            <td th:text="${carOnSale.ownerId}"></td>-->
+            <td th:text="${carOnSale.brand}"></td>
+            <td th:text="${carOnSale.price}"></td>
+            <td>
+                <a th:href="@{/car(vin=${carOnSale.vin})}">See details</a>
+            </td>
+        </tr>
+    </table>
+    <h3 th:if="${carsOnSale.isEmpty()}">There is no cars on sale yet!</h3>
+</body>
+</html>

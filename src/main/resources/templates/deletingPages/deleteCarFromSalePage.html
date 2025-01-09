@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head('Car deleting')}"></head>
+<body>
+    <header th:replace="~{fragments/header::header}"></header>
+    <h1>Are you sure you want to delete car with vin [[${car.vin}]] from sale?</h1>
+    <p>This action can't be undone</p>
+    <form th:action="@{/deleteCarFromSale}" th:method="POST" th:object="${areYouSureForm}">
+        <label th:for="sure">Are you sure?</label>
+        <input type="checkbox" th:field="*{sure}">
+        <input class="btn btn-success" type="submit" value="Remove car">
+    </form>
+</body>
+</html>

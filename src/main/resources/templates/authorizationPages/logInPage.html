@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head('Log in')}"></head>
+<body>
+    <header th:replace="~{fragments/header::header}"></header>
+    <form th:action="@{/logIn}" th:method="POST" th:object="${logInForm}">
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Login" type="text" th:field="*{login}">
+            <label th:for="login">Login: </label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Password" type="password" th:field="*{password}">
+            <label th:for="password">Password: </label>
+        </div>
+        <div class="mb-3">
+            <input class="btn btn-success" type="submit" aria-describedby="submit-text" value="Log in">
+            <p id="submit-text" class="form-text">Don't have account yet? <a th:href="@{/register}">Register now!</a></p>
+        </div>
+    </form>
+    <div th:if="${errors != null}">
+        <p class="text-danger" th:each="error : ${errors}" th:text="${error.getDefaultMessage()}">Error</p>
+    </div>
+</body>
+</html>

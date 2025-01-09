@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head('Add car on sale')}"></head>
+<body>
+    <header th:replace="~{fragments/header::header}"></header>
+    <form th:action="@{/addCarOnSale}" th:method="POST" th:object="${addCarOnSaleForm}">
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Vin" type="text" th:field="*{vin}"><br>
+            <label th:for="vin">Vin: </label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Brand" type="text" th:field="*{brand}"><br>
+            <label th:for="brand">Brand: </label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Production year"
+                   type="number" min="1900" max="2100" th:field="*{productionYear}"><br>
+            <label th:for="productionYear">Production year: </label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Engine power"
+                   type="number" min="1" max="1000" step="0.01" th:field="*{enginePower}"><br>
+            <label th:for="enginePower">Engine power: </label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" placeholder="Price"
+                   type="number" min="1" max="1000000000" step="0.01" th:field="*{price}">
+            <label th:for="price">Price: </label>
+        </div>
+
+        <input class="btn btn-success" type="submit" value="Add car on sale">
+    </form>
+    <div th:if="${errors != null}">
+        <p class="text-danger" th:each="error : ${errors}" th:text="${error.getDefaultMessage()}"></p>
+    </div>
+</body>
+</html>

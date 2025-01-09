@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head('Car')}"></head>
+<body>
+    <header th:replace="~{fragments/header::header}"></header>
+    <h1>Car on sale [[${car.vin}]]</h1>
+    <p>Owner: <a th:href="@{/user(id=${user.id})}" th:text="${user.fullName}"></a></p>
+    <p>Brand: [[${car.brand}]]</p>
+    <p>Production year: [[${car.productionYear}]]</p>
+    <p>Engine power: [[${car.enginePower}]]</p>
+    <p>Price: [[${car.price}]]</p>
+    <a th:if="${session.loggedUser != null && session.loggedUser.id == car.ownerId}"
+       th:href="@{/deleteCarFromSale(vin=${car.vin})}">Delete car from sale</a>
+    <a th:if="${session.loggedUser != null && session.loggedUser.id != car.ownerId}"
+       th:href="@{/buyCar(vin=${car.vin})}">Buy car</a>
+</body>
+</html>

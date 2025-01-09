@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <header th:fragment="header" class="d-flex justify-content-between">
+        <ul class="nav nav-underline">
+            <li class="nav-item"><a class="nav-link" th:href="@{/}">All cars on sale</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/searchByBrand}">Search cars by brand</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/searchByPrice}">Search cars by price</a></li>
+        </ul>
+        <ul class="nav nav-underline">
+            <div th:if="${#ctx.session.loggedUser == null}" th:remove="tag">
+                <li class="nav-item"><a class="nav-link" th:href="@{/logIn}">Log in</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/register}">Register</a></li>
+            </div>
+            <div th:if="${#ctx.session.loggedUser != null}" th:remove="tag">
+                <li class="nav-item"><a class="nav-link" th:href="@{/addCarOnSale}">Add new car on sale</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/myDeals}">My deals</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/myAccount}" th:text="${session.loggedUser.fullName}">User Page</a></li>
+            </div>
+        </ul>
+    </header>
+</body>
+</html>

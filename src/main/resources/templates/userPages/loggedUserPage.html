@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head::head(${session.loggedUser.fullName})}"></head>
+<body>
+    <header th:replace="~{fragments/header::header}"></header>
+    <div th:object="${session.loggedUser}">
+      <h1 th:text="*{fullName}">Full Name</h1>
+      <p th:text="*{login}">Login</p>
+      <p th:text="*{phone}">Phone</p>
+      <form th:action="@{/logOut}" th:method="POST">
+          <input class="btn btn-success" type="submit" value="Log out">
+      </form>
+      <a th:href="@{/deleteMyAccount}">Delete my Account</a>
+    </div>
+    <div th:if="${!userCars.isEmpty()}">
+        <h3 th:text="${session.loggedUser.fullName} + '\'s cars'"></h3>
+        <table class="table table-striped table-hover table-bordered">
+            <tr>
+                <td>#</td>
+                <td>VIN</td>
+                <td>Brand</td>
+                <td>Price</td>
+                <td>Remove car</td>
+            </tr>
+            <tr th:each="userCar : ${userCars}">
+                <td th:text="${userCarStat.count}"></td>
+                <td><a th:href="@{/car(vin=${userCar.vin})}" th:text="${userCar.vin}"></a></td>
+                <td th:text="${userCar.brand}"></td>
+                <td th:text="${userCar.price}"></td>
+                <td><a th:href="@{/deleteCarFromSale(vin=${userCar.vin})}">Delete car from sale</a></td>
+            </tr>
+        </table>
+    </div>
+    <div th:if="${userCars.isEmpty()}">
+        <h3>You don't have cars on sale yet!</h3>
+    </div>
+</body>
+</html>
