@@ -1,0 +1,103 @@
+services:
+  app:
+    build:
+      context: ./controllers
+      dockerfile: Dockerfile
+    container_name: cardealership
+    networks:
+      - app_network
+    depends_on:
+      car-service:
+        condition: service_started
+      deal-service:
+        condition: service_started
+      user-service:
+        condition: service_started
+    ports:
+      - "8080:8080"
+
+  car-service:
+    build:
+      context: ./car-service
+      dockerfile: Dockerfile
+    container_name: car-service
+    networks:
+      - app_network
+    depends_on:
+      car_db:
+        condition: service_started
+  deal-service:
+    build:
+      context: ./deal-service
+      dockerfile: Dockerfile
+    container_name: deal-service
+    networks:
+      - app_network
+    depends_on:
+      deal_db:
+        condition: service_started
+      user_db:
+        condition: service_started
+      car_db:
+        condition: service_started
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    networks:
+      - app_network
+    depends_on:
+      user_db:
+        condition: service_started
+      car_db:
+        condition: service_started
+
+  car_db:
+    image: mysql:latest
+    container_name: car_db
+    restart: always
+    networks:
+      - app_network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cardealership_car_on_sale
+      MYSQL_TCP_PORT: 3306
+    volumes:
+      - car_db_data:/var/lib/mysql
+      - ./car-service/src/resources/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+  deal_db:
+    image: mysql:latest
+    container_name: deal_db
+    restart: always
+    networks:
+      - app_network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cardealership_deal
+      MYSQL_TCP_PORT: 3307
+    volumes:
+      - deal_db_data:/var/lib/mysql
+      - ./deal-service/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+  user_db:
+    image: mysql:latest
+    container_name: user_db
+    restart: always
+    networks:
+      - app_network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cardealership_user
+      MYSQL_TCP_PORT: 3308
+    volumes:
+      - user_db_data:/var/lib/mysql
+      - ./user-service/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+
+networks:
+  app_network:
+
+volumes:
+  car_db_data:
+  deal_db_data:
+  user_db_data:
