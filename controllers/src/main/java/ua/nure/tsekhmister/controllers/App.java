@@ -44,6 +44,7 @@ public class App {
             var instances = discoveryClient.getInstances(serviceName);
             while (instances.isEmpty()) {
                 try {
+                    System.out.println("Waiting for " + serviceName);
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);

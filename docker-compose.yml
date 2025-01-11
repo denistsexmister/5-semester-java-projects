@@ -1,4 +1,15 @@
 services:
+  consul:
+    image: consul:1.15
+    container_name: consul
+    ports:
+      - "8500:8500" # Consul UI port
+    command: "agent -dev -client=0.0.0.0"
+    networks:
+      - app_network
+    logging:
+      driver: none
+
   app:
     build:
       context: ./controllers
@@ -65,7 +76,7 @@ services:
       MYSQL_TCP_PORT: 3306
     volumes:
       - car_db_data:/var/lib/mysql
-      - ./car-service/src/resources/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./car-service/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
   deal_db:
     image: mysql:latest
     container_name: deal_db
