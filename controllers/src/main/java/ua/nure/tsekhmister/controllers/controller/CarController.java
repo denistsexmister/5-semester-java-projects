@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ua.nure.tsekhmister.commons.entity.SellerBuyerCarOnSale;
 import ua.nure.tsekhmister.controllers.client.CarClient;
 import ua.nure.tsekhmister.controllers.client.DealClient;
 import ua.nure.tsekhmister.controllers.client.UserClient;
@@ -203,7 +204,7 @@ public class CarController {
         User seller = userClient.getUserById(car.getOwnerId());
         User buyer = (User) httpServletRequest.getSession().getAttribute("loggedUser");
 
-        dealClient.addDeal(seller, buyer, car);
+        dealClient.addDeal(new SellerBuyerCarOnSale(seller, buyer, car));
         httpServletRequest.getSession().removeAttribute("car");
         return "redirect:/";
     }

@@ -40,7 +40,8 @@ public class CarController {
     }
 
     @PostMapping("/addCarOnSale")
-    public CarOnSale addCarOnSale(AddCarOnSaleForm addCarOnSaleForm, Long ownerId) throws SQLException {
+    public CarOnSale addCarOnSale(@RequestBody AddCarOnSaleForm addCarOnSaleForm,
+                                  @RequestParam Long ownerId) throws SQLException {
         return carService.addCarOnSale(addCarOnSaleForm, ownerId);
     }
 

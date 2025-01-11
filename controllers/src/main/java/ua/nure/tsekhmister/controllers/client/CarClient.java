@@ -2,6 +2,7 @@ package ua.nure.tsekhmister.controllers.client;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
@@ -16,7 +17,7 @@ import java.util.List;
 @HttpExchange(url = "/cars")
 public interface CarClient {
     @GetExchange("/getCars")
-    List<Car> getCars();
+    List<CarOnSale> getCars();
 
     @GetExchange("/getCarByVin/{vin}")
     CarOnSale getCarByVin(@PathVariable("vin") String vin);
@@ -28,7 +29,8 @@ public interface CarClient {
     List<CarOnSale> getCarsWithPriceBiggerThan(@PathVariable("price") BigDecimal price);
 
     @PostExchange("/addCarOnSale")
-    CarOnSale addCarOnSale(AddCarOnSaleForm addCarOnSaleForm, Long ownerId);
+    CarOnSale addCarOnSale(@RequestBody AddCarOnSaleForm addCarOnSaleForm,
+                           @RequestParam Long ownerId);
 
     @DeleteExchange("/deleteCarFromSaleByVin")
     void deleteCarFromSaleByVin(@RequestBody CarOnSale carOnSale);

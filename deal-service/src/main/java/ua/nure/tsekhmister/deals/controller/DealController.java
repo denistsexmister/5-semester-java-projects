@@ -1,11 +1,9 @@
 package ua.nure.tsekhmister.deals.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.nure.tsekhmister.commons.entity.CarOnSale;
 import ua.nure.tsekhmister.commons.entity.Deal;
+import ua.nure.tsekhmister.commons.entity.SellerBuyerCarOnSale;
 import ua.nure.tsekhmister.commons.entity.User;
 import ua.nure.tsekhmister.deals.service.DealService;
 
@@ -23,27 +21,30 @@ public class DealController {
     }
 
     @PostMapping("/addDeal")
-    public Deal addDeal(User seller, User buyer, CarOnSale car) throws SQLException {
+    public Deal addDeal(@RequestBody SellerBuyerCarOnSale sellerBuyerCarOnSale) throws SQLException {
+        User seller = sellerBuyerCarOnSale.getSeller();
+        User buyer = sellerBuyerCarOnSale.getBuyer();
+        CarOnSale car = sellerBuyerCarOnSale.getCarOnSale();
         return dealService.addDeal(seller, buyer, car);
     }
 
     @GetMapping("/getDealsWhereUserSeller")
-    public List<Deal> getDealsWhereUserSeller(User loggedUser) throws SQLException {
+    public List<Deal> getDealsWhereUserSeller(@RequestBody User loggedUser) throws SQLException {
         return dealService.getDealsWhereUserSeller(loggedUser);
     }
 
     @GetMapping("/getDealsWhereUserBuyer")
-    public List<Deal> getDealsWhereUserBuyer(User loggedUser) throws SQLException {
+    public List<Deal> getDealsWhereUserBuyer(@RequestBody User loggedUser) throws SQLException {
         return dealService.getDealsWhereUserBuyer(loggedUser);
     }
 
     @GetMapping("/getSellers")
-    public Map<Long, User> getSellers(List<Deal> dealsWhereUserBuyer) throws SQLException {
+    public Map<Long, User> getSellers(@RequestBody List<Deal> dealsWhereUserBuyer) throws SQLException {
         return dealService.getSellers(dealsWhereUserBuyer);
     }
 
     @GetMapping("/getBuyers")
-    public Map<Long, User> getBuyers(List<Deal> dealsWhereUserSeller) throws SQLException {
+    public Map<Long, User> getBuyers(@RequestBody List<Deal> dealsWhereUserSeller) throws SQLException {
         return dealService.getBuyers(dealsWhereUserSeller);
     }
 }
