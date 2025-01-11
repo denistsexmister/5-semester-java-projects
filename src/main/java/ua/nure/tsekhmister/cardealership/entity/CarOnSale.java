@@ -1,14 +1,22 @@
 package ua.nure.tsekhmister.cardealership.entity;
 
+import ua.nure.tsekhmister.cardealership.memento.CarOnSaleMemento;
+
 import java.math.BigDecimal;
 import java.time.Year;
+import java.util.Stack;
 
 public class CarOnSale extends Car implements Cloneable{
     private Long ownerId;
     private BigDecimal price;
+    private final Stack<CarOnSaleMemento> history = new Stack<>();
+    private boolean isDeleted = false;
+
+
     public CarOnSale() {
         super();
     }
+
     public CarOnSale(String vin, Long ownerId, String brand, Year productionYear,
                      BigDecimal enginePower, BigDecimal price) {
         super(vin, brand, productionYear, enginePower);
@@ -42,6 +50,7 @@ public class CarOnSale extends Car implements Cloneable{
     }
 
     public void setOwnerId(Long ownerId) {
+        saveState();
         this.ownerId = ownerId;
     }
 
@@ -50,6 +59,7 @@ public class CarOnSale extends Car implements Cloneable{
     }
 
     public void setPrice(BigDecimal price) {
+        saveState();
         this.price = price;
     }
 
@@ -64,6 +74,35 @@ public class CarOnSale extends Car implements Cloneable{
                 ", price=" + price +
                 '}';
     }
+
+    public void delete() {
+        isDeleted = true;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    private void saveState() {
+        if (!isDeleted) {
+            history.push(new CarOnSaleMemento(vin, ownerId, brand, productionYear, enginePower, price));
+        }
+    }
+
+    public boolean undo() {
+        if (!history.isEmpty() && !isDeleted) {
+            CarOnSaleMemento memento = history.pop();
+            this.vin = memento.getVin();
+            this.ownerId = memento.getOwnerId();
+            this.brand = memento.getBrand();
+            this.productionYear = memento.getProductionYear();
+            this.enginePower = memento.getEnginePower();
+            this.price = memento.getPrice();
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public Object clone() {
