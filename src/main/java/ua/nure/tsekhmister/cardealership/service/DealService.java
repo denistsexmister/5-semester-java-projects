@@ -8,6 +8,7 @@ import ua.nure.tsekhmister.cardealership.dao.UserDAO;
 import ua.nure.tsekhmister.cardealership.entity.CarOnSale;
 import ua.nure.tsekhmister.cardealership.entity.Deal;
 import ua.nure.tsekhmister.cardealership.entity.User;
+import ua.nure.tsekhmister.cardealership.observer.ConsoleDealLogger;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,6 +25,8 @@ public class DealService {
     public DealService(DAOFactory daoFactory) {
         this.dealDAO = daoFactory.getDealDAO();
         this.userDAO = daoFactory.getUserDAO();
+
+        dealDAO.addDealListener(new ConsoleDealLogger());
     }
 
     public Deal addDeal(User seller, User buyer, CarOnSale car) throws SQLException {

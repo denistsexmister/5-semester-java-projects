@@ -2,6 +2,7 @@ package ua.nure.tsekhmister.cardealership.dao.mysql;
 
 import ua.nure.tsekhmister.cardealership.dao.DealDAO;
 import ua.nure.tsekhmister.cardealership.entity.*;
+import ua.nure.tsekhmister.cardealership.observer.DealListener;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -12,6 +13,17 @@ import java.util.List;
 import java.util.Objects;
 
 public class MySqlDealDAO implements DealDAO {
+    private final List<DealListener> dealListeners = new ArrayList<>();
+
+    public void addDealListener(DealListener dealListener) {
+        dealListeners.add(dealListener);
+    }
+
+    private void notifyDealListeners(Deal deal) {
+        for (DealListener listener : dealListeners) {
+            listener.onDealCreated(deal);
+        }
+    }
 
     @Override
     public Deal addDeal(User seller, User buyer, CarOnSale car) throws SQLException {
@@ -25,6 +37,8 @@ public class MySqlDealDAO implements DealDAO {
             deleteCarFromSale(conn, car);
             Deal deal = addDeal(conn, seller, buyer, car);
             addSoldCar(conn, car, deal);
+
+            notifyDealListeners(deal);
 
             conn.commit();
             return deal;

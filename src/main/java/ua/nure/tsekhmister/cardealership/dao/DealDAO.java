@@ -4,6 +4,7 @@ import ua.nure.tsekhmister.cardealership.entity.CarOnSale;
 import ua.nure.tsekhmister.cardealership.entity.Deal;
 import ua.nure.tsekhmister.cardealership.entity.SoldCar;
 import ua.nure.tsekhmister.cardealership.entity.User;
+import ua.nure.tsekhmister.cardealership.observer.DealListener;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -18,5 +19,5 @@ public interface DealDAO {
     List<Deal> getDealsSinceDate(LocalDateTime localDateTime) throws SQLException;
     List<Deal> getDealsWhereCostIsBiggerThan(BigDecimal price) throws SQLException;
     SoldCar getSoldCarByDeal(Deal deal) throws SQLException;
-
+    void addDealListener(DealListener dealListener);
 }
