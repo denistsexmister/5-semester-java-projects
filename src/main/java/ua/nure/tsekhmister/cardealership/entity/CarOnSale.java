@@ -16,6 +16,27 @@ public class CarOnSale extends Car implements Cloneable{
         this.ownerId = ownerId;
     }
 
+    public static Builder builder(String vin, String brand, Year productionYear, BigDecimal enginePower,
+                                  Long ownerId, BigDecimal price) {
+        return new Builder(vin, brand, productionYear, enginePower, ownerId, price);
+    }
+
+    public static class Builder extends Car.Builder {
+        private final Long ownerId;
+        private final BigDecimal price;
+
+        public Builder(String vin, String brand, Year productionYear, BigDecimal enginePower,
+                       Long ownerId, BigDecimal price) {
+            super(vin, brand, productionYear, enginePower);
+            this.ownerId = ownerId;
+            this.price = price;
+        }
+
+        public CarOnSale build() {
+            return new CarOnSale(vin, ownerId, brand, productionYear, enginePower, price);
+        }
+    }
+
     public Long getOwnerId() {
         return ownerId;
     }

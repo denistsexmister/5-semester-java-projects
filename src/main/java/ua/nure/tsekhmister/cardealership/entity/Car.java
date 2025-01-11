@@ -20,6 +20,28 @@ public class Car {
         this.enginePower = enginePower;
     }
 
+    public static Builder builder(String vin, String brand, Year productionYear, BigDecimal enginePower) {
+        return new Builder(vin, brand, productionYear, enginePower);
+    }
+
+    public static class Builder {
+        protected final String vin;
+        protected final String brand;
+        protected final Year productionYear;
+        protected final BigDecimal enginePower;
+
+        public Builder(String vin, String brand, Year productionYear, BigDecimal enginePower) {
+            this.vin = vin;
+            this.brand = brand;
+            this.productionYear = productionYear;
+            this.enginePower = enginePower;
+        }
+
+        public Car build() {
+            return new Car(vin, brand, productionYear, enginePower);
+        }
+    }
+
     public String getVin() {
         return vin;
     }

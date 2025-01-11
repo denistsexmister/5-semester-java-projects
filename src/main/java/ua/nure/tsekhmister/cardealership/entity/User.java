@@ -12,11 +12,47 @@ public class User implements Cloneable {
     public User() {
     }
 
+    public User(Long id, String login, String password, String fullName, String phone) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.fullName = fullName;
+        this.phone = phone;
+    }
+
     public User(String login, String password, String fullName, String phone) {
         this.login = login;
         this.password = password;
         this.fullName = fullName;
         this.phone = phone;
+    }
+
+    public static Builder builder(Long id, String login, String password, String fullName) {
+        return new Builder(id, login, password, fullName);
+    }
+
+    public static class Builder {
+        private final Long id;
+        private final String login;
+        private final String password;
+        private final String fullName;
+        private String phone;
+
+        public Builder(Long id, String login, String password, String fullName) {
+            this.id = id;
+            this.login = login;
+            this.password = password;
+            this.fullName = fullName;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public User build() {
+            return new User(id, login, password, fullName, phone);
+        }
     }
 
     public Long getId() {

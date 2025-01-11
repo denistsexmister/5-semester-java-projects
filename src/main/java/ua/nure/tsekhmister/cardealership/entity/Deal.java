@@ -13,11 +13,44 @@ public class Deal {
     public Deal() {
 
     }
-    public Deal(Long sellerId, Long buyerId, LocalDateTime dealDate, BigDecimal cost) {
+    public Deal(Long dealId, Long sellerId, Long buyerId, LocalDateTime dealDate, BigDecimal cost) {
+        this.dealId = dealId;
         this.sellerId = sellerId;
         this.buyerId = buyerId;
         this.dealDate = dealDate;
         this.cost = cost;
+    }
+
+    public static Builder builder(Long dealId, LocalDateTime dealDate, BigDecimal cost) {
+        return new Builder(dealId, dealDate, cost);
+    }
+
+    public static class Builder {
+        private final Long dealId;
+        private Long sellerId;
+        private Long buyerId;
+        private final LocalDateTime dealDate;
+        private final BigDecimal cost;
+
+        public Builder(Long dealId, LocalDateTime dealDate, BigDecimal cost) {
+            this.dealId = dealId;
+            this.dealDate = dealDate;
+            this.cost = cost;
+        }
+
+        public Builder sellerId(Long sellerId) {
+            this.sellerId = sellerId;
+            return this;
+        }
+
+        public Builder buyerId(Long buyerId) {
+            this.buyerId = buyerId;
+            return this;
+        }
+
+        public Deal build() {
+            return new Deal(dealId, sellerId, buyerId, dealDate, cost);
+        }
     }
 
     public Long getDealId() {

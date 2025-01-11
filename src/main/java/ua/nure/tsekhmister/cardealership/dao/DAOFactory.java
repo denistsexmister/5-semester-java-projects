@@ -10,8 +10,17 @@ public abstract class DAOFactory {
     static Map<String, DAOFactory> cache = new HashMap<>();
 
     public static DAOFactory getDAOFactory() {
-        // read configuration
-        return new MySqlDAOFactory();
+        String mysqlFactoryName = "ua.nure.tsekhmister.cardealership.dao.mysql.MySqlDAOFactory";
+        DAOFactory daoFactory;
+
+        if (cache.containsKey(mysqlFactoryName)) {
+            daoFactory = cache.get(mysqlFactoryName);
+        } else {
+            daoFactory = new MySqlDAOFactory();
+            cache.put(mysqlFactoryName, daoFactory);
+        }
+
+        return daoFactory;
     }
 
     public static DAOFactory getDAOFactory(String name) throws SQLException {

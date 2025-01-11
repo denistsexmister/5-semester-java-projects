@@ -10,8 +10,33 @@ public class SoldCar extends Car{
         super();
     }
 
+    public SoldCar(String vin, Long dealId, String brand, Year productionYear, BigDecimal enginePower) {
+        super(vin, brand, productionYear, enginePower);
+        this.dealId = dealId;
+    }
+
     public SoldCar(String vin, String brand, Year productionYear, BigDecimal enginePower) {
         super(vin, brand, productionYear, enginePower);
+    }
+
+
+    public static Builder builder(String vin, String brand, Year productionYear, BigDecimal enginePower,
+                                  Long dealId) {
+        return new Builder(vin, brand, productionYear, enginePower, dealId);
+    }
+
+    public static class Builder extends Car.Builder {
+        private final Long dealId;
+
+        public Builder(String vin, String brand, Year productionYear, BigDecimal enginePower,
+                       Long dealId) {
+            super(vin, brand, productionYear, enginePower);
+            this.dealId = dealId;
+        }
+
+        public SoldCar build() {
+            return new SoldCar(vin, dealId, brand, productionYear, enginePower);
+        }
     }
 
     public Long getDealId() {
