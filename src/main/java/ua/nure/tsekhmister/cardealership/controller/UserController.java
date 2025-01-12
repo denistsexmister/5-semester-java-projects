@@ -2,6 +2,7 @@ package ua.nure.tsekhmister.cardealership.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,8 +21,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
-@Controller
-public class UserController {
+@Component
+public class UserController implements IUserController {
     private final UserService userService;
 
     @Autowired
@@ -29,16 +30,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(path = "/register")
+    @Override
     public String getRegisterPageView(Model model, HttpServletRequest httpServletRequest) {
-        if (httpServletRequest.getSession().getAttribute("loggedUser") != null) {
-            return "redirect:/";
-        }
         model.addAttribute("registerForm", new RegisterForm());
         return "authorizationPages/registerPage";
     }
 
-    @PostMapping(path = "/register")
+    @Override
     public String addNewUser(Model model, @Validated RegisterForm registerForm,
                              BindingResult bindingResult, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -57,17 +55,13 @@ public class UserController {
         }
     }
 
-    @GetMapping(path = "/logIn")
+    @Override
     public String getLogInPageView(Model model, HttpServletRequest httpServletRequest) {
-        if (httpServletRequest.getSession().getAttribute("loggedUser") != null) {
-            return "redirect:/";
-        }
-
         model.addAttribute("logInForm", new LogInForm());
         return "authorizationPages/logInPage";
     }
 
-    @PostMapping(path = "/logIn")
+    @Override
     public String logIn(Model model, @Validated LogInForm logInForm,
                         BindingResult bindingResult, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -100,14 +94,10 @@ public class UserController {
 
     }
 
-    @GetMapping(path = "/myAccount")
+    @Override
     public String getLoggedUserPage(Model model, HttpServletRequest httpServletRequest) {
-        User loggedUser = (User) httpServletRequest.getSession().getAttribute("loggedUser");
-        if (loggedUser == null) {
-            return "redirect:/";
-        }
-
         try {
+            User loggedUser = (User) httpServletRequest.getSession().getAttribute("loggedUser");
             model.addAttribute("userCars", userService.getCarsByOwner(loggedUser));
 
             return "userPages/loggedUserPage";
@@ -116,13 +106,13 @@ public class UserController {
         }
     }
 
-    @PostMapping(path = "/logOut")
+    @Override
     public String logOut(HttpServletRequest httpServletRequest) {
         httpServletRequest.getSession().removeAttribute("loggedUser");
         return "redirect:/";
     }
 
-    @GetMapping(path = "/user")
+    @Override
     public String getUserPage(Model model, HttpServletRequest httpServletRequest) {
         String idString = httpServletRequest.getParameter("id");
         if (idString == null) {
@@ -145,17 +135,13 @@ public class UserController {
         }
     }
 
-    @GetMapping(path = "/deleteMyAccount")
+    @Override
     public String getDeleteMyAccountPage(Model model, HttpServletRequest httpServletRequest) {
-        User loggedUser = (User) httpServletRequest.getSession().getAttribute("loggedUser");
-        if (loggedUser == null) {
-            return "redirect:/";
-        }
         model.addAttribute("areYouSureForm", new AreYouSureForm());
         return "deletingPages/deleteMyAccountPage";
     }
 
-    @PostMapping(path = "/deleteMyAccount")
+    @Override
     public String deleteMyAccount(Model model, AreYouSureForm areYouSureForm,
                                   HttpServletRequest httpServletRequest) {
         User loggedUser = (User) httpServletRequest.getSession().getAttribute("loggedUser");
